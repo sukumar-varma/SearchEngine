@@ -1,5 +1,10 @@
 # SearchEngine
 
+Clone SearchEngine repo:
+    git clone https://github.com/vdasari98/SearchEngine.git
+    create a new branch
+    Happy coding!
+
 Setup:
 Windows:
 1. Install python
