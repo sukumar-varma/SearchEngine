@@ -1,6 +1,7 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 from controllers.webpages import Webpage
+import json
 
 app = Flask(__name__)
 
@@ -11,7 +12,6 @@ def get_webpage():
     args = request.args
     name = args.get("name")
     return webpage.get_webpage(name)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
