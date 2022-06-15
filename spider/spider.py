@@ -49,6 +49,8 @@ class Spider:
                 self.crawled.append(new_link)
                 print(new_link)
                 text, links = self.get_links(new_link)
+                ic(links[:5])
+                ic(text[500:800])
                 self.links.extend(links)
                 self.crawled_data[new_link] = text
 
@@ -120,7 +122,7 @@ class Spider:
 
 
 if __name__ == "__main__":
-    spider = Spider("https://www.utdallas.edu/", 4)
+    spider = Spider("https://www.utdallas.edu/", 1000)
     spider.crawl()
 
     # TODO: Add DB
