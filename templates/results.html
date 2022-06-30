@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>UTD search engine</title>
+    <meta charset="UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <style>
+        .btn-default{
+        background-color: #008542;
+        color:#FFF;
+        border-color: #008542;
+        }
+    </style>
+  </head>
+
+  <body>
+    <center>
+      <h1>UTD Search Engine</h1>
+    </center>
+    <br />
+    <center>
+      <form method="POST" action="/search">
+        <div class="form-group">
+          <input
+            style="height: 40px; width: 40%"
+            type="text"
+            value=""
+            name="search_box"
+            autofocus
+          />
+          <input
+            style="font-size: 13px; text-align: center; font-weight: bold"
+            class="btn btn-default"
+            type="submit"
+            name="search"
+            value="Search"
+          />
+        </div>
+      </form>
+    </center>
+    <div
+      style="
+        position: absolute;
+        left: 5%;
+        top: 20%;
+        word-wrap: normal;
+        margin-right: auto;
+      "
+    >
+      <p>{{ links_count }} link(s) found in {{ time_taken }}</p>
+      <br />
+      {% for link in links %}
+      <a href="{{ link }}"> {{ link }} </a>
+      <br />
+      {% endfor %}
+    </div>
+  </body>
+</html>
