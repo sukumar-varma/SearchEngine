@@ -1,6 +1,6 @@
 # UTD Search Engine
 
-A demo is available at [utd-search-engine.herokuapp.com](utd-search-engine.herokuapp.com)
+A demo is available at [utd-search-engine.herokuapp.com](https://utd-search-engine.herokuapp.com/)
 
 ## Getting Started
 0. Clone/Fork SearchEngine repo:
