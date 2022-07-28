@@ -1,8 +1,10 @@
 import json
+import os
 import re
 import traceback
 from collections import Counter
 from urllib.request import Request, urlopen
+from matplotlib.pyplot import title
 
 import nltk
 from bs4 import BeautifulSoup
@@ -26,6 +28,7 @@ class Spider:
         self.crawled = []
         self.crawled_data = {}
         self.main_key_value = {}
+        self.url_data = {}
 
     def crawl(self):
         """
@@ -48,15 +51,14 @@ class Spider:
             if new_link not in self.crawled:
                 self.crawled.append(new_link)
                 print(new_link)
-                text, links = self.get_links(new_link)
-                ic(links[:5])
-                ic(text[500:800])
+                text, links, title = self.get_links(new_link)
                 self.links.extend(links)
                 self.crawled_data[new_link] = text
 
                 text_counter = self.clean_data_and_get_count(text)
                 key_value_dict = self.generate_key_value_dict(text_counter, new_link)
                 self.update_main_dict(key_value_dict)
+                self.url_data[new_link] = {"title": title, "text": text}
                 num += 1
 
     def get_links(self, url):
@@ -65,20 +67,22 @@ class Spider:
         """
         text = ""
         links = []
+        title = ""
         try:
             req = Request(url)
             html_page = urlopen(req)
-            text, links = self.get_links_from_html(html_page)
+            soup = BeautifulSoup(html_page, "lxml")
+            text, links, title = self.get_links_from_html(soup)
         except Exception as e:
             traceback.print_exc()
-        return text, links
+        return text, links, title
 
-    def get_links_from_html(self, html_content):
+    def get_links_from_html(self, soup):
         """
         This method is used to get all links from a given html content.
         """
-        soup = BeautifulSoup(html_content, "lxml")
         text = soup.get_text()
+        title = soup.title.get_text()
 
         links = []
         for link in soup.findAll("a"):
@@ -89,7 +93,7 @@ class Spider:
             if "utdallas.edu" not in split_url_webiste:
                 continue
             links.append(link.get("href"))
-        return text, links
+        return text, links, title
 
     def clean_data_and_get_count(self, text):
         """
@@ -107,7 +111,7 @@ class Spider:
         """
         key_value_dict = {}
         for key, value in count_dict.items():
-            key_value_dict[key] = {"count": value, "url": url}
+            key_value_dict[key.lower()] = {"count": value, "url": url}
         return key_value_dict
 
     def update_main_dict(self, key_value_dict):
@@ -119,12 +123,19 @@ class Spider:
                 self.main_key_value[key].append(value)
             else:
                 self.main_key_value[key] = [value]
+    
+    def get_title(self, soup):
+        return soup.title.get_text()
 
 
 if __name__ == "__main__":
-    spider = Spider("https://www.utdallas.edu/", 1000)
+    spider = Spider("https://www.utdallas.edu/", 100)
+    save_location = os.path.join("data", "crawled_data_1")
     spider.crawl()
 
     # TODO: Add DB
-    with open("crawled_data.json", "w") as outfile:
+    with open(f"{save_location}.json", "w") as outfile:
         json.dump(spider.main_key_value, outfile, indent=4)
+    
+    with open(f"{save_location}_urls.json", "w") as outfile:
+        json.dump(spider.url_data, outfile, indent=4)

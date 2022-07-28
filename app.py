@@ -29,7 +29,7 @@ def search():
         for word in words[1:]:
             links.extend(webpage.get_webpage(word))
         
-        links = list(set(links))
+        links = [i for n, i in enumerate(links) if i not in links[n + 1:]]
         return render_template('results.html', links=links, links_count=len(links), time_taken=time.process_time() - start)
 
 
