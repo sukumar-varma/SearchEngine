@@ -30,6 +30,7 @@ def search():
             links.extend(webpage.get_webpage(word))
         
         links = [i for n, i in enumerate(links) if i not in links[n + 1:]]
+        print(links[0]['url'])
         return render_template('results.html', links=links, links_count=len(links), time_taken=time.process_time() - start)
 
 

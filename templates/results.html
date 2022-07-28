@@ -53,8 +53,8 @@
       <p>{{ links_count }} link(s) found in {{ time_taken }}</p>
       <br />
       {% for link in links %}
-      <a href="{{ link }}"> {{ link["title"] }} </a>
-      <a href="{{ link }}"> {{ link["link"] }} </a>
+      <a href={{ link["url"] }}> {{ link["title"] }} </a>
+      <!-- <a href="{{ link["url"] }}"> {{ link["url"] }} </a> -->
       <p>{{ link["text"] }}</p>
       <br />
       {% endfor %}
